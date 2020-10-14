@@ -1,5 +1,5 @@
 # Create React Hook Form
-A project with examples of react-hook-form
+A project with examples of using [react-hook-forms](https://github.com/react-hook-form/react-hook-form) and [create-react-app](https://github.com/facebook/create-react-app)
 
 # Getting started
 
