@@ -3,15 +3,15 @@ import { useForm } from 'react-hook-form'
 
 import { MultiStepContext, step1Selector, update } from './store'
 
-const FormValidation = ({onSubmit}) => {
+const FormValidation = ({goForward}) => {
     const {state, dispatch} = useContext(MultiStepContext)
     const data = step1Selector(state)
     const { register, handleSubmit, errors} = useForm({
         defaultValues: {...data}
     })
-    const submitHandler = (data) => {
-        dispatch(update('step1', data))
-        onSubmit()
+    const submitHandler = (formData) => {
+        dispatch(update('step1', formData))
+        goForward()
     }
     return (
         <div>
@@ -36,7 +36,7 @@ const FormValidation = ({onSubmit}) => {
                     />
                     {errors.password && <span style={{color: 'red'}}>{errors.password.message}</span>}
                  </div>
-                 <input type="submit" />
+                 <input type="submit" value="Next step" />
             </form>
         </div>
     )

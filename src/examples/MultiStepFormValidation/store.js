@@ -53,15 +53,3 @@ export const step3Selector = (state) => ({
     job: state.step3.job,
     age: state.step3.age
 })
-
-export const step4Selector = (state) => {
-    const step1 = step1Selector(state)
-    const step2 = step2Selector(state)
-    const step3 = step3Selector(state)
-
-    return {
-        ...step1,
-        ...step2,
-        ...step3
-    }
-}

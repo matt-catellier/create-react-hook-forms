@@ -3,16 +3,22 @@ import {useForm} from 'react-hook-form'
 
 import {MultiStepContext, step3Selector, update} from './store'
 
-const Step3 = ({ onSubmit }) => {
+const Step3 = ({ goForward, goBack }) => {
     const {state, dispatch} = useContext(MultiStepContext)
     const data = step3Selector(state)
-    const { register, handleSubmit, errors} = useForm({
+    const { register, handleSubmit, errors, getValues} = useForm({
         defaultValues: {...data}
     })
     const submitHandler = (data) => {
         dispatch(update('step3', data))
-        onSubmit()
+        goForward()
     }
+
+    React.useEffect(() => {
+        return () => {
+            dispatch(update('step3', getValues()))
+        }
+    }, [dispatch, getValues])
     return (
         <div>
             <form onSubmit={handleSubmit(submitHandler)}>
@@ -26,7 +32,8 @@ const Step3 = ({ onSubmit }) => {
                     <input id="age" name="age" ref={register({ required: 'This field is required' })} />
                     {errors.age && <span style={{color: 'red'}}>{errors.age.message}</span>}
                 </div>
-                 <input type="submit" />
+                <input type="button" value="Go back" onClick={goBack} />
+                <input type="submit" value="Next step" />
             </form>
         </div>
     )

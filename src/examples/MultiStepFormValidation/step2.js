@@ -1,18 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext } from 'react' 
 import {useForm} from 'react-hook-form'
 
 import {MultiStepContext, step2Selector, update} from './store'
 
-const Step2 = ({onSubmit}) => {
+const Step2 = ({goForward, goBack}) => {
     const {state, dispatch} = useContext(MultiStepContext)
     const data = step2Selector(state)
-    const { register, handleSubmit, errors} = useForm({
+    const { register, handleSubmit, errors, getValues} = useForm({
         defaultValues: {...data}
     })
     const submitHandler = (data) => { 
         dispatch(update('step2', data))
-        onSubmit()
+        goForward()
     }
+
+    React.useEffect(() => {
+        return () => {
+            dispatch(update('step2', getValues()))
+        }
+    }, [])
     return (
         <div>
             <form onSubmit={handleSubmit(submitHandler)}>
@@ -26,7 +33,8 @@ const Step2 = ({onSubmit}) => {
                     <input id="lastName" name="lastName" ref={register({ required: 'This field is required' })} />
                     {errors.lastName && <span style={{color: 'red'}}>{errors.lastName.message}</span>}
                 </div>
-                 <input type="submit" />
+                <input type="button" value="Go back" onClick={goBack} />
+                <input type="submit" value="Next step" />
             </form>
         </div>
     )
